@@ -5,23 +5,25 @@ from my_eth.keccak_util import keccak256
 
 class Block:
     def __init__(self, number:int, parent_hash: bytes,
-                transactions: list, difficulty : int = 1):
+                transactions: list, transactions_root: bytes = b'',  difficulty : int = 1):
         self.number = number
         self.parent_hash = parent_hash
         self.timestamp = 0   # 挖矿时填
         self.transactions = transactions
+        self.transactions_root = transactions_root
         self.difficulty = difficulty
         self.nonce = 0       # 挖矿时暴力试
         self.hash = None   # 挖出后才有
 
     def header_bytes(self) -> bytes:
-        """把决定哈希的字段拼成 bytes（简化版 RLP） 暂时不含 transactions_root 根哈希 """
+        """把决定哈希的字段拼成 bytes（简化版 RLP） 含 transactions_root 根哈希 """
         return(
             self.number.to_bytes(8, 'big')
             + self.parent_hash
             + self.timestamp.to_bytes(8, 'big')
             + self.difficulty.to_bytes(8, 'big')
             + self.nonce.to_bytes(8, 'big')
+            + self.transactions_root.to_bytes(32, 'big')
         )
 
     def mine(self) -> None:
