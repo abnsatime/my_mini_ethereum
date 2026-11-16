@@ -2,6 +2,7 @@
 
 from typing import Any
 from my_eth.keccak_util import keccak256
+from my_eth.merkle import merkle_root
 
 class Block:
     def __init__(self, number:int, parent_hash: bytes,
@@ -23,12 +24,15 @@ class Block:
             + self.timestamp.to_bytes(8, 'big')
             + self.difficulty.to_bytes(8, 'big')
             + self.nonce.to_bytes(8, 'big')
-            + self.transactions_root.to_bytes(32, 'big')
+            + self.transactions_root
         )
 
     def mine(self) -> None:
         """工作量证明： 暴力试Nonce ，直到哈希前 difficulty 个十六进制位为0"""
         import time
+        self.transactions_root = merkle_root(
+            [keccak256(t.tx_hash()) for t in self.transactions]
+        )
         self.timestamp = int(time.time())
         target = "0" * self.difficulty
         while True:

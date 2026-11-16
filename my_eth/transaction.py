@@ -46,3 +46,13 @@ class SignedTransaction:
 
     def verify(self, claimed_sender: str) -> bool:
         return self.sender == claimed_sender
+
+
+    def tx_hash(self) -> bytes:
+        """交易哈希 = keccak256(签名前的 bytes + r + s + v)"""
+        return keccak256(
+            self.tx.signing_bytes()
+            + self.r.to_bytes(32, 'big')
+            + self.s.to_bytes(32, 'big')
+            + self.v.to_bytes(1, 'big')
+        )
