@@ -23,3 +23,18 @@ class WorldState:
         sender_account.nonce += 1
         self.get_or_create(to).balance += amount
 
+
+    def deploy_contract(self, addr: str, code: bytes) -> None:
+        """在dadr处 创建也给合约账户（简化：部署地址由外部指定）"""
+        acct = self.get_or_create(addr)
+        acct.code = code
+
+    def snapshot(self) -> dict:
+        """ 拍下当前世界状态的快照 (EVM 回滚失败调用)"""
+        return {a: (acct.code, acct.balanace, dict(acct.storage)) for a, acct in self.accounts.items()}
+
+    def rollback(self, snapshot: dict) -> None:
+        """回滚到快照"""
+        self.accounts = {
+            a: Account(code=n, balance=b, storage=dict(s)) for a, (n, b, s) in snapshot.items()
+            }
