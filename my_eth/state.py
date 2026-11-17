@@ -31,7 +31,7 @@ class WorldState:
 
     def snapshot(self) -> dict:
         """ 拍下当前世界状态的快照 (EVM 回滚失败调用)"""
-        return {a: (acct.code, acct.balanace, dict(acct.storage)) for a, acct in self.accounts.items()}
+        return {a: (acct.code, acct.balance, dict(acct.storage)) for a, acct in self.accounts.items()}
 
     def rollback(self, snapshot: dict) -> None:
         """回滚到快照"""
