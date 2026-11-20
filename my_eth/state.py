@@ -30,11 +30,16 @@ class WorldState:
         acct.code = code
 
     def snapshot(self) -> dict:
-        """ 拍下当前世界状态的快照 (EVM 回滚失败调用)"""
+        """ 快照:刻意不含 nonce(revert 不回滚 nonce —— 真实以太坊语义)"""
         return {a: (acct.code, acct.balance, dict(acct.storage)) for a, acct in self.accounts.items()}
 
-    def rollback(self, snapshot: dict) -> None:
-        """回滚到快照"""
-        self.accounts = {
-            a: Account(code=n, balance=b, storage=dict(s)) for a, (n, b, s) in snapshot.items()
-            }
+    def rollback(self, snap: dict) -> None:
+        """就地恢复 code/balance/storage;    但 nonce 保留当前值"""
+        for addr in list(self.accounts):
+            if addr not in snap:
+                del self.accounts[addr]
+        for addr, (code, balance, storage) in snap.items():
+            acct = self.accounts[addr]
+            acct.code = code
+            acct.balance = balance
+            acct.storage = dict(storage)
