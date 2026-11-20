@@ -1,0 +1,20 @@
+[project]
+name = "my-mini-ethereum"
+version = "0.1.0"
+description = "A hand-written mini Ethereum for learning: PoW chain, accounts, signed txs, simplified EVM, ABI"
+requires-python = ">=3.10"
+dependencies = [
+    "eth-hash[pycryptodome]",
+    "eth-utils",
+    "eth-keys",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["my_eth"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

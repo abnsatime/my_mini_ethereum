@@ -11,6 +11,8 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install deps
-        run: pip install "eth-hash[pycryptodome]" eth-utils eth-keys pytest
+        run: |
+          pip install "eth-hash[pycryptodome]" eth-utils eth-keys pytest
+          pip install -e .
       - name: Run tests
         run: pytest tests/ -v

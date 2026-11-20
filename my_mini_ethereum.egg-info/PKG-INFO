@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: my-mini-ethereum
+Version: 0.1.0
+Summary: A hand-written mini Ethereum for learning: PoW chain, accounts, signed txs, simplified EVM, ABI
+Requires-Python: >=3.10
+Requires-Dist: eth-hash[pycryptodome]
+Requires-Dist: eth-utils
+Requires-Dist: eth-keys
