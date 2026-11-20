@@ -5,7 +5,7 @@ from my_eth.state import WorldState
 from my_eth.transaction import SignedTransaction
 
 
-def execute_transaction(world: WorldState, stx: SingedTransaction, gas_price: int=1) -> dict:
+def execute_transaction(world: WorldState, stx: SignedTransaction, gas_price: int=1) -> dict:
     """在快照保护下 执行一笔已签名交易 返回: {"success": bool, "return": bytes}
     无效交易直接 raise(不进块)  revert 返回 success=False(进块但状态回滚)"""
 

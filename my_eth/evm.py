@@ -68,13 +68,13 @@ class EVM:
                 a, b = self.pop(), self.pop()
                 self.push(a * b)
             elif op == SUB:
-                a, b = self.pop(), self.pop()
+                b, a = self.pop(), self.pop()
                 self.push(a - b)          # 负数 & MASK 就是模运算补码,正确!
             elif op == LT:
-                a, b = self.pop(), self.pop()
+                b, a = self.pop(), self.pop()
                 self.push(1 if a < b else 0)
             elif op == GT:
-                a, b = self.pop(), self.pop()
+                b, a = self.pop(), self.pop()
                 self.push(1 if a > b else 0)
             elif op == EQ:
                 a, b = self.pop(), self.pop()

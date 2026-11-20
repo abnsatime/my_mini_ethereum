@@ -1,5 +1,6 @@
 """世界状态：所有账户的当前余额和 nonce"""
-
+from my_eth.merkle import merkle_root
+from my_eth.keccak_util import keccak256
 from my_eth.account import Account
 
 class WorldState:
@@ -43,3 +44,17 @@ class WorldState:
             acct.code = code
             acct.balance = balance
             acct.storage = dict(storage)
+
+    
+    def root(self) -> bytes:
+        """世界状态根： 所有账户哈希成一棵 Merkle 树"""
+        leaves = [keccak256(
+            acct.nonce.to_bytes(32, "big")
+            + acct.balance.to_bytes(32, "big")
+            + acct.storage_root
+            + acct.code_hash
+        )
+        for addr, acct in sorted(self.accounts.items())
+        ]
+
+        return merkle_root(leaves)

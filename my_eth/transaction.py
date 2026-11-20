@@ -45,7 +45,7 @@ class SignedTransaction:
         self.sender = tx.recover_from(r, s, v)
 
     def verify(self, claimed_sender: str) -> bool:
-        return self.sender == claimed_sender
+        return self.sender.lower() == claimed_sender.lower()
 
 
     def tx_hash(self) -> bytes:

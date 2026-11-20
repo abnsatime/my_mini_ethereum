@@ -24,7 +24,7 @@ class Account:
     def storage_root(self) -> bytes:
         """所有已用槽位（排序保证确定性）   ->    merkle根"""
         leaves = [
-            keccak256(slot.to_bytes(32, "big")) + value.to_bytes(32, 'big')
+            keccak256(slot.to_bytes(32, "big") + value.to_bytes(32, "big"))
             for slot, value in sorted(self.storage.items())
         ]
         return merkle_root(leaves)
